@@ -1,0 +1,1 @@
+A = [x_donnees_bruitees',ones(1,length(x_donnees_bruitees))']
