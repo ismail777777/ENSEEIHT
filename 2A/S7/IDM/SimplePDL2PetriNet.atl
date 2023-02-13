@@ -1,0 +1,137 @@
+module SimplePDL2PetriNet;
+create OUT: petrinet from  IN: simplepdl;
+
+-- Obtenir le processus qui contient ce process element.
+-- Remarque: Ce helper ne serait pas utile si une r f rence opposite
+-- avait  t  plac e entre Process et ProcessElement
+helper context simplepdl!ProcessElement
+def: getProcess(): simplepdl!Process =
+	simplepdl!Process.allInstances()
+		->select(p | p.processElements->includes(self))
+		->asSequence()->first();
+
+-- Traduire un Process en un PetriNet de m me nom
+rule Process2PetriNet {
+	from p: simplepdl!Process
+	to pn: petrinet!PetriNet (name <- p.name)
+	do {pn.petrinetelement <- petrinet!Arc.allInstances()
+		->union(petrinet!Place.allInstances())
+		->union(petrinet!Transition.allInstances());
+       }
+}
+
+-- Traduire une WorkDefinition en un motif sur le r seau de Petri
+
+
+rule WorkDefinition2PetriNet {
+	from wd:simplepdl!WorkDefinition
+	to  
+		petri_pret:petrinet!Place (nbJeton <-1,
+								   name <- wd.name +'_pret',
+								   net <- wd.getProcess()),
+		
+		petri_lance:petrinet!Place(nbJeton<-0,
+								   name <- wd.name + '_lance',
+								   net <- wd.getProcess()),
+			
+		petri_enExecution:petrinet!Place(nbJeton<-0,
+										 name <- wd.name + '_en_execution',
+										 net <- wd.getProcess()),
+	
+		petri_termine:petrinet!Place(nbJeton<-0,
+									 name <- wd.name + '_termine',
+									 net <- wd.getProcess()),
+		
+		--les transitions
+		tr_lance: petrinet!Transition(name <- wd.name + '_lancee',
+									  net <- wd.getProcess()),
+		
+		tr_termine: petrinet!Transition(name <- wd.name + '_terminee',
+										net<-wd.getProcess()),
+		
+		arc_pret_lance: petrinet!Arc(
+            source <- petri_pret,
+            destination <- tr_lance,
+            Poids <- 1,
+            Type <- #normal,
+            net <- wd.getProcess()),
+        
+        arc_lance_lance: petrinet!Arc(
+            source <- tr_lance,
+            destination <- petri_lance,
+            Poids <- 1,
+            Type <- #normal,
+            net <- wd.getProcess()),
+        
+        arc_lance_enExecution: petrinet!Arc(
+            source <- tr_lance,
+            destination <- petri_enExecution,
+            Poids <- 1,
+            Type <- #normal,
+            net <- wd.getProcess()),
+        
+        arc_enExecution_termine: petrinet!Arc(
+            source <- petri_enExecution,
+            destination <- tr_termine,
+            Poids <- 1,
+            Type <- #normal,
+            net <- wd.getProcess()),
+        
+        arc_termine_termine: petrinet!Arc(
+            source <- tr_termine,
+            destination <- petri_termine,
+            Poids <- 1,
+            Type <- #normal,
+            net <- wd.getProcess())
+
+	}
+
+
+rule WorkSequence2PetriNet {
+	from ws:simplepdl!WorkSequence 
+	to
+		petri_source_destination:petrinet!Arc (    
+		
+		source <-   if (ws.linkType = #startToFinish or ws.linkType = #startToStart) then
+                            thisModule.resolveTemp(ws.predecessor, 'petri_lance')
+                    else
+                              thisModule.resolveTemp(ws.predecessor, 'petri_termine')
+                    endif,
+        destination <-  if (ws.linkType = #startToStart or ws.linkType = #finishToStart) then
+                            thisModule.resolveTemp(ws.successor, 'tr_lance')
+                        else
+                            thisModule.resolveTemp(ws.successor, 'tr_termine')
+                        endif,
+        Poids<- 1,
+        Type <- #read_arc,
+		net <- ws.successor.getProcess())
+}
+
+rule Ressource2PetriNet {
+	from r:simplepdl!Ressource
+	to petri_ressource:petrinet!Place (
+	name<-r.name,	
+	nbJeton <- r.Quantite,
+	net<-r.getProcess()
+		)
+	}
+
+rule Allocation2PetriNet {
+	from al:simplepdl!Allocation
+	to 
+		arc_prend_ressource: petrinet!Arc(
+			source <- al.ressource,
+			destination <- thisModule.resolveTemp(al.workdefinition, 'tr_lance'),
+			Poids <- al.Occurence,
+			Type <- #normal,
+			net <- al.ressource.getProcess()
+		),
+			
+		e_lache_ressource: petrinet!Arc(
+			source <- al.ressource,
+			destination <- thisModule.resolveTemp(al.workdefinition, 'tr_termine'),
+			Poids <- al.Occurence,
+			Type <- #normal,
+			net <- al.ressource.getProcess()
+		)
+}
