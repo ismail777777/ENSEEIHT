@@ -1,0 +1,4 @@
+(executable
+ (public_name SOURCEETU_TP1)
+ (name main)
+ (libraries SOURCEETU_TP1))

@@ -1,0 +1,42 @@
+#  GLPK model file
+
+
+###############################  Model ###############################
+
+
+###############################  Sets  ###############################
+set PRODUCTS;
+
+set ORDERS; 
+
+set SHOPS;	
+
+################### Variables ###################
+
+var X{i in SHOPS, j in ORDERS, k in PRODUCTS}, >= 0, integer; 
+# or binary ?; 
+
+###################  Constants: Data to load   #########################
+
+param coutunitaire{i in SHOPS, k in PRODUCTS}; 
+
+param stock{i in SHOPS, k in PRODUCTS}; 
+
+param qtedemande{j in ORDERS, k in PRODUCTS};
+
+################### Constraints ###################
+
+
+s.t. REspectqtetotaledechauqeproduit{j in ORDERS, k in PRODUCTS}:
+  sum{i in SHOPS} X[i,j,k] = qtedemande[j,k];
+s.t. Respectnondepassementdestock{i in SHOPS, j in ORDERS ,k in PRODUCTS}:
+               X[i,j,k] <= stock[i,k];
+
+
+###### Objective ######
+
+minimize CoutTotal: 
+		sum{i in SHOPS, j in ORDERS, k in PRODUCTS} coutunitaire[i,k] * X[i,j,k]; 
+
+
+end;

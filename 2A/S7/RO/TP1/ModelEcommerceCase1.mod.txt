@@ -1,0 +1,43 @@
+#  GLPK model file
+
+
+###############################  Model ###############################
+
+
+###############################  Sets  ###############################
+
+set FLUIDE; 
+
+set MAGASIN;
+
+set DEMANDE;	
+
+################### Variables ###################
+
+var Q1{i in MAGASIN,k in DEMANDE}, >=0; 
+var Q2{i in MAGASIN,k in DEMANDE}, >=0;
+# or binary ?; 
+
+###################  Constants: Data to load   #########################
+param demandes{i in DEMANDE, j in FLUIDE};
+
+param Stocks{i in MAGASIN, j in FLUIDE};
+
+param Couts{i in MAGASIN, j in FLUIDE};
+
+################### Constraints ###################
+
+
+s.t. RespectQteDemandeeInfSommeDesQtesDispo{i in WORKERS}:
+  sum{k in DEMANDE} Q1[i,k] <= Stocks[i,1];
+  sum{k in DEMANDE} Q2[i,k] <= Stocks[i,2];
+
+
+
+###### Objective ######
+
+minimize CoutTotal: 
+		sum{i in WORKERS, j in JOBS} X[i,j]; 
+
+
+end;

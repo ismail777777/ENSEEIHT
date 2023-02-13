@@ -1,0 +1,5 @@
+# dune init project SOURCEETU_TP1
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /home/ielalout/Desktop/n7/2A/PF/sourceEtu_tp1
+# Auto-detected concurrency: 4

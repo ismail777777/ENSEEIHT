@@ -1,0 +1,20 @@
+# Données pour le problème de gestion de personnel
+
+data;
+
+set WORKERS :=
+1
+2
+3;
+
+set JOBS :=
+j1
+j2
+j3;
+
+param Cout: 1 2 3 :=
+j1 12 42 10
+j2 20 35 77
+j3 11 42 25;
+
+end;

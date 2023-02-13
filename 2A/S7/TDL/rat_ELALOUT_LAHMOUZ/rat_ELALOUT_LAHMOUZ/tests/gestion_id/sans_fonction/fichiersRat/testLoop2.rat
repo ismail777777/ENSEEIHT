@@ -1,0 +1,11 @@
+test{
+    int c = 0;
+    loop {
+        c = (c+1);
+        if (c=3){
+            break;
+        } else {
+            print c;
+        }
+    }
+}

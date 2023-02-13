@@ -1,0 +1,2 @@
+(** @canonical Tp3.Exo2 *)
+module Exo2 = Tp3__Exo2

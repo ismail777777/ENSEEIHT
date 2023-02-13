@@ -1,0 +1,37 @@
+#  GLPK model file
+
+
+###############################  Model ###############################
+
+
+###############################  Sets  ###############################
+
+set JOBS; 
+
+set WORKERS;	
+
+################### Variables ###################
+
+var X{i in WORKERS, j in JOBS}, binary; 
+# or binary ?; 
+
+###################  Constants: Data to load   #########################
+
+param Cout{i in WORKERS, j in JOBS}; 
+
+################### Constraints ###################
+
+
+s.t. Respect1PersonneParTravail{i in WORKERS}:
+  sum{k in JOBS} X[i,k] = +1;
+s.t. Respect1TravailParPersonne{j in JOBS}:
+  sum{k in WORKERS} X[k,j] = +1;
+
+
+###### Objective ######
+
+minimize CoutTotal: 
+		sum{i in WORKERS, j in JOBS} X[i,j]; 
+
+
+end;

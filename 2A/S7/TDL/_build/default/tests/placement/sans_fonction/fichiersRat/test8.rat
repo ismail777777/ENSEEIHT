@@ -1,0 +1,11 @@
+main {
+    bool x = true;
+    rat y = [0/1];
+    int z = 0;
+    h : loop { 
+       rat n = [0/1];
+    } 
+    bool x1 = true;
+    rat y1 = [0/1];
+    int z1 = 0;
+}

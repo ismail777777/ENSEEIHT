@@ -1,0 +1,15 @@
+\* Problème : Assemblage PL *\
+
+Maximize
+ Benefice: + 180000 Xs + 166666.67 Xl
+
+Subject To
+ HeureDeTravail: + 1 Xs + 1 Xl <= 60
+ Surface: + 200 Xl + 333.33 Xs <= 15000
+
+Bounds
+ 0<=Xl<=48
+
+End
+  
+

@@ -1,0 +1,44 @@
+\* Problem: Pb_Ecommerce2 *\
+
+Minimize
+ CoutTotal: + X(M1,D1,F1) + 2 X(M2,D1,F1) + 3 X(M3,D1,F1) + X(M1,D1,F2)
+ + 3 X(M2,D1,F2) + 2 X(M3,D1,F2) + X(M1,D2,F1) + 2 X(M2,D2,F1)
+ + 3 X(M3,D2,F1) + X(M1,D2,F2) + 3 X(M2,D2,F2) + 2 X(M3,D2,F2)
+
+Subject To
+ REspectqtetotaledechauqeproduit(D1,F1): + X(M1,D1,F1) + X(M2,D1,F1)
+ + X(M3,D1,F1) = 2
+ REspectqtetotaledechauqeproduit(D1,F2): + X(M1,D1,F2) + X(M2,D1,F2)
+ + X(M3,D1,F2) = -0
+ REspectqtetotaledechauqeproduit(D2,F1): + X(M1,D2,F1) + X(M2,D2,F1)
+ + X(M3,D2,F1) = 1
+ REspectqtetotaledechauqeproduit(D2,F2): + X(M1,D2,F2) + X(M2,D2,F2)
+ + X(M3,D2,F2) = 3
+ Respectnondepassementdestock(M1,D1,F1): + X(M1,D1,F1) <= 2.5
+ Respectnondepassementdestock(M1,D1,F2): + X(M1,D1,F2) <= 1
+ Respectnondepassementdestock(M1,D2,F1): + X(M1,D2,F1) <= 2.5
+ Respectnondepassementdestock(M1,D2,F2): + X(M1,D2,F2) <= 1
+ Respectnondepassementdestock(M2,D1,F1): + X(M2,D1,F1) <= 1
+ Respectnondepassementdestock(M2,D1,F2): + X(M2,D1,F2) <= 2
+ Respectnondepassementdestock(M2,D2,F1): + X(M2,D2,F1) <= 1
+ Respectnondepassementdestock(M2,D2,F2): + X(M2,D2,F2) <= 2
+ Respectnondepassementdestock(M3,D1,F1): + X(M3,D1,F1) <= 2
+ Respectnondepassementdestock(M3,D1,F2): + X(M3,D1,F2) <= 1
+ Respectnondepassementdestock(M3,D2,F1): + X(M3,D2,F1) <= 2
+ Respectnondepassementdestock(M3,D2,F2): + X(M3,D2,F2) <= 1
+
+Generals
+ X(M1,D1,F1)
+ X(M2,D1,F1)
+ X(M3,D1,F1)
+ X(M1,D1,F2)
+ X(M2,D1,F2)
+ X(M3,D1,F2)
+ X(M1,D2,F1)
+ X(M2,D2,F1)
+ X(M3,D2,F1)
+ X(M1,D2,F2)
+ X(M2,D2,F2)
+ X(M3,D2,F2)
+
+End

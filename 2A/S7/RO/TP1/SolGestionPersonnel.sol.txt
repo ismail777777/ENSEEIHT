@@ -1,0 +1,25 @@
+c Problem:    ModelGestionPersonnel
+c Rows:       7
+c Columns:    9
+c Non-zeros:  27
+c Status:     INTEGER OPTIMAL
+c Objective:  CoutTotal = 3 (MINimum)
+c
+s mip 7 9 o 3
+i 1 1
+i 2 1
+i 3 1
+i 4 1
+i 5 1
+i 6 1
+i 7 3
+j 1 1
+j 2 0
+j 3 0
+j 4 0
+j 5 0
+j 6 1
+j 7 0
+j 8 1
+j 9 0
+e o f

@@ -1,0 +1,17 @@
+\* Problème : Assemblage PLNE *\
+
+Maximize
+ Benefice: + 9000 Xs + 10000 Xl
+
+Subject To
+ HeureDeTravail: +5 Xs + 6 Xl <= 6000
+ Surface: +10 Xl + 20 Xs <= 15000
+
+Bounds
+ 0<=Xl<=800
+Generals
+ Xs
+ Xl
+End
+  
+
